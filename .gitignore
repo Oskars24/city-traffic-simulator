@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 /dist
+tiles_source.txt
 
 # local env files
 .env.local
