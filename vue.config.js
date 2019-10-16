@@ -5,7 +5,7 @@ module.exports = {
     config
         .module
         .rule("geojson")
-        .test(/\.(json|geojson)$/)
+        .test(/\.(geojson)$/)
         .use("json-loader")
         .loader("json-loader")
         .end();
