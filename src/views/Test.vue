@@ -51,14 +51,13 @@
         </vl-layer-tile>
 
     </vl-map>
-    <div style="padding: 20px">
+    <div class="zmienne">
         Zoom: {{ zoom }}<br>
         Center: {{ center }}<br>
         Rotation: {{ rotation }}<br>
         My geolocation: {{ geolocPosition }}<br>
         point1: {{ point1 }}<br>
-        point1: {{ point2 }}
-
+        point1: {{ point2 }}<br>
     </div>
   </div>
 </template>
@@ -69,10 +68,6 @@ import urzad from '../assets/test.geojson'
 import osmtogeojson from 'osmtogeojson/index'
 import Style from 'ol/style/Style'
 import Icon from 'ol/style/Icon'
-import Fill from 'ol/style/Fill'
-import Stroke from 'ol/style/Stroke'
-import Text from 'ol/style/Text'
-import Circle from 'ol/style/Circle'
 export default {
     data () {
         return { 
@@ -152,11 +147,14 @@ export default {
 
 </script>
 
-<style>
+<style lang="scss">
 #app {
     display: flex;
     flex-flow: column;
     align-items: center;
+}
+.zmienne {
+    color: $red;
 }
 
 .globalMap {

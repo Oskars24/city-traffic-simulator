@@ -9,5 +9,12 @@ module.exports = {
         .use("json-loader")
         .loader("json-loader")
         .end();
-    }
+    },
+    css: {
+        loaderOptions: {
+          sass: {
+            data: `@import "@/styles/variables.scss";`
+          }
+        }
+      }
 };
