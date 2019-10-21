@@ -12,7 +12,7 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg3725"
-   sodipodi:docname="tracking.svg"
+   sodipodi:docname="tracking_save.svg"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
   <metadata
      id="metadata3731">
@@ -22,6 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -40,9 +41,9 @@
      inkscape:window-height="699"
      id="namedview3727"
      showgrid="false"
-     inkscape:zoom="11.041667"
-     inkscape:cx="18.698809"
-     inkscape:cy="7.400228"
+     inkscape:zoom="7.8076374"
+     inkscape:cx="13.132648"
+     inkscape:cy="7.4185446"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -53,28 +54,9 @@
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="sccsccscccccccccccscccccssscsccccccccccccc"
      style="stroke-width:1.3565073" />
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:54.26029205px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.3565073"
-     x="7.5583081"
-     y="11.330105"
-     id="text3737"><tspan
-       sodipodi:role="line"
-       id="tspan3735"
-       x="7.5583081"
-       y="11.330105"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.13904476px;font-family:'open sans';-inkscape-font-specification:'open sans Bold';stroke-width:1.3565073">REC</tspan></text>
-  <ellipse
-     id="path3739"
-     cx="4.007812"
-     cy="8.325923"
-     style="opacity:1;fill:none;stroke:#000000;stroke-width:0.76212639;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     rx="2.6710787"
-     ry="2.6710784" />
-  <circle
-     style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.27306378;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="path4563"
-     cx="4.0303597"
-     cy="8.3448572"
-     r="1.413981" />
+  <path
+     inkscape:connector-curvature="0"
+     d="m 13.783112,2.4196488 h 1.397605 v 2.3316725 h -1.397605 z m 4.195612,0.4663344 V 12.212673 H 6.7866959 V 1.0206453 H 16.113386 Z M 9.1183679,5.2176559 H 15.647052 V 1.9533143 H 9.1183679 Z M 16.579721,7.082994 H 8.1856989 v 4.19701 h 8.3940221 z"
+     id="path4686"
+     style="stroke-width:0.46633449" />
 </svg>

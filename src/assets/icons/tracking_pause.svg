@@ -12,7 +12,7 @@
    viewBox="0 0 24 24"
    version="1.1"
    id="svg3725"
-   sodipodi:docname="tracking.svg"
+   sodipodi:docname="tracking_pause.svg"
    inkscape:version="0.92.4 (5da689c313, 2019-01-14)">
   <metadata
      id="metadata3731">
@@ -22,6 +22,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -41,8 +42,8 @@
      id="namedview3727"
      showgrid="false"
      inkscape:zoom="11.041667"
-     inkscape:cx="18.698809"
-     inkscape:cy="7.400228"
+     inkscape:cx="16.698123"
+     inkscape:cy="6.9610053"
      inkscape:window-x="-8"
      inkscape:window-y="-8"
      inkscape:window-maximized="1"
@@ -53,28 +54,10 @@
      inkscape:connector-curvature="0"
      sodipodi:nodetypes="sccsccscccccccccccscccccssscsccccccccccccc"
      style="stroke-width:1.3565073" />
-  <text
-     xml:space="preserve"
-     style="font-style:normal;font-weight:normal;font-size:54.26029205px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.3565073"
-     x="7.5583081"
-     y="11.330105"
-     id="text3737"><tspan
-       sodipodi:role="line"
-       id="tspan3735"
-       x="7.5583081"
-       y="11.330105"
-       style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.13904476px;font-family:'open sans';-inkscape-font-specification:'open sans Bold';stroke-width:1.3565073">REC</tspan></text>
-  <ellipse
-     id="path3739"
-     cx="4.007812"
-     cy="8.325923"
-     style="opacity:1;fill:none;stroke:#000000;stroke-width:0.76212639;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     rx="2.6710787"
-     ry="2.6710784" />
-  <circle
-     style="opacity:1;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1.27306378;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     id="path4563"
-     cx="4.0303597"
-     cy="8.3448572"
-     r="1.413981" />
+  <path
+     inkscape:connector-curvature="0"
+     d="M 11.423924,10.78462 H 9.5214152 V 2.5528732 h 1.9025088 z m 3.26131,-8.2317468 H 12.782725 V 10.78462 h 1.902509 z"
+     id="path4575"
+     style="stroke-width:0.44245017"
+     sodipodi:nodetypes="cccccccccc" />
 </svg>

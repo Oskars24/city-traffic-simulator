@@ -5,15 +5,23 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
-        geoTracking: false,
+        startTracking: false,
+        enableTracking: false,
+        useGeoPosition: false,
         geoPosition: [22.7690175, 49.7824746],
         choosenPosition: [22.7690175, 49.7824746],
         currentAdress: "",
         userPath: []
     },
     mutations: {
-        switchGeoTracking(state, payload) {
-            state.geoTracking=payload
+        switchStartTracking(state, payload) {
+            state.startTracking=payload
+        },
+        switchEnableTracking(state, payload) {
+            state.enableTracking=payload
+        },
+        switchUseGeoPosition(state, payload) {
+            state.useGeoPosition=payload
         },
         updateGeoPosition(state, payload) {
             state.geoPosition=payload
@@ -25,7 +33,17 @@ export default new Vuex.Store({
             state.currentAdress=payload
         },
         updateUserPath(state, payload) {
-            state.userPath.push(payload)
+            if (payload.empty != null) {
+                state.userPath.push(payload.empty)
+            }
+            state.userPath[state.userPath.length-1].push(payload.coords)
+        },
+        reduceUserPath(state, payload) {
+            const reduce = state.userPath.filter(el => {
+                return el.length > payload
+            })
+            state.userPath = reduce
+            
         }
     },
     actions: {

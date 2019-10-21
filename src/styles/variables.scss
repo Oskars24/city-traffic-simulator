@@ -40,3 +40,6 @@ $h6: 700 10px Open Sans, sans-serif;
     background-color: $grey;
 }
 
+// CONSTANTS
+$fullheight: calc(var(--vh, 1vh) * 100);
+

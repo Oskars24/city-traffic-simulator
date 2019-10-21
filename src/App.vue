@@ -9,6 +9,7 @@
 
 <script>
 import appmenu from './views/Menu.vue'
+
 export default {
     name: 'App',
     data () {
@@ -23,7 +24,7 @@ export default {
         currentPosition() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    this.$store.commit("switchGeoTracking", true)
+                    this.$store.commit("switchUseGeoPosition", true)
                     this.$store.commit("updateGeoPosition", [position.coords.longitude, position.coords.latitude])
                     this.$store.dispatch("getCurrentAdress", [position.coords.longitude, position.coords.latitude])
                 })
@@ -49,6 +50,9 @@ export default {
         */
     },
 }
+// NEED FOR 100vh ON MOBILE
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty('--vh', `${vh}px`);
 </script>
 
 <style lang="scss">
@@ -69,7 +73,7 @@ html, body {
 
 .all {
     width: 100vw;
-    height: 100vh;
+    height: $fullheight;
     overflow: hidden;
     position: relative;
 }
@@ -80,7 +84,7 @@ html, body {
 }
 
 .slide-enter {
-    transform: translateY(-100vh);
+    transform: translateY(100vh);
 }
 
 .slide-leave-to {

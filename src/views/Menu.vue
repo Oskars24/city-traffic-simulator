@@ -80,7 +80,7 @@ export default {
 			switch (name) {
 				case "current":
 					if (navigator.geolocation) {
-						this.$store.commit("switchGeoTracking", true)
+						this.$store.commit("switchUseGeoPosition", true)
 					} else {
 						this.$store.dispatch("useGeoPosition")
 					}
@@ -89,22 +89,22 @@ export default {
 					console.log("map")
 					break;
 				case "pkp":
-					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("switchUseGeoPosition", false)
 					this.$store.commit("updateChoosenPosition", [22.7764096, 49.7832626])
 					this.$store.commit("updateCurrentAdress", "Dworzec Główny PKP, Przemyśl")
 					break;
 				case "pks":
-					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("switchUseGeoPosition", false)
 					this.$store.commit("updateChoosenPosition", [22.7756452, 49.7840627])
 					this.$store.commit("updateCurrentAdress", "Dworzec PKS, Przemyśl")
 					break;
 				case "polonia":
-					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("switchUseGeoPosition", false)
 					this.$store.commit("updateChoosenPosition", [22.7591040, 49.7798144])
 					this.$store.commit("updateCurrentAdress", "Parking Polonia, Przemyśl")
 					break;
 				default:
-					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("switchUseGeoPosition", false)
 					this.$store.commit("updateChoosenPosition", [22.7695915, 49.7822044])
 					this.$store.commit("updateCurrentAdress", "Rynek, Przemyśl")
 			}
@@ -147,7 +147,7 @@ export default {
 .menu {
 	position: relative;
 	display: grid;
-	grid-template-columns: 1fr 1fr;
+	grid-template-columns: repeat(4, 1fr);
 	justify-items: center;
 	background-color: white;
 	border-top: $border-grey;
@@ -181,7 +181,7 @@ export default {
 	}
 
 	&__item {
-		max-width: 140px;
+		max-width: 75px;
 		margin: 10px 0 10px 0;
 		padding: 0 5px 0 5px;
 		pointer-events: auto;
@@ -192,7 +192,7 @@ export default {
 			align-items: center;
 			width: 100%;
 			height: 30px;
-			font: $h2;
+			font: $h4;
 			color: white;
 			border-radius: 10px 10px 0 0;
 		}
