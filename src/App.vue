@@ -10,15 +10,44 @@
 <script>
 import appmenu from './views/Menu.vue'
 export default {
-  name: 'App',
-  data () {
-        return {
-            test: "test",
+    name: 'App',
+    data () {
+            return {
+                test: "test",
+            }
+    },
+    components: {
+        appmenu
+    },
+    methods: {
+        currentPosition() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    this.$store.commit("switchGeoTracking", true)
+                    this.$store.commit("updateGeoPosition", [position.coords.longitude, position.coords.latitude])
+                    this.$store.dispatch("getCurrentAdress", [position.coords.longitude, position.coords.latitude])
+                })
+            }
         }
-  },
-  components: {
-      appmenu
-  }
+    },
+    created() {
+        this.currentPosition()
+        
+        
+       /*
+       if (navigator.geolocation) {
+                let current= null
+                const store = this.$store
+                navigator.geolocation.watchPosition(function (position) {
+                    if (current != position.timestamp) {
+                        current = position.timestamp
+                        store.commit("updateUserPath", [position.coords.longitude, position.coords.latitude])
+                        console.log([position.coords.longitude, position.coords.latitude])
+                    }
+                })
+            }
+        */
+    },
 }
 </script>
 

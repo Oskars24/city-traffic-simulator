@@ -32,10 +32,20 @@
 			</div>
 		</router-link>
 		<div class="menu__bottom" @click.stop="menuBottomClick">
-			<span class="menu__bottom--title">Wybierz lokalizację</span>
-			<img class="menu__bottom--img" src="../assets/fakeicon.png">
+			<span class="menu__bottom--title">Aktualna lokalizacja:</span>
+			<span class="menu__bottom--address">{{ $store.state.currentAdress }}</span>
+			<img class="menu__bottom--img" src="../assets/icons/settings.svg">
 			<div class="menu__bottom--settings" :class="{'translateZero':menuBottomToggle}">
-
+				<div class="menu__bottom--settings-div">
+					<span class="menu__bottom--settings-title">Wybierz lokalizację: </span>
+					<img class="menu__bottom--settings-close" src="../assets/icons/close.svg">
+				</div>
+				<div class="menu__bottom--settings-button" name="current" @click.stop="selectLocal">Obecna lokalizacja</div>
+				<div class="menu__bottom--settings-button" name="map" @click.stop="selectLocal">Wskaż na mapie</div>
+				<div class="menu__bottom--settings-button" name="pkp" @click.stop="selectLocal">Dworzec PKP</div>
+				<div class="menu__bottom--settings-button" name="pks" @click.stop="selectLocal">Dworzec PKS</div>
+				<div class="menu__bottom--settings-button" name="center" @click.stop="selectLocal">Centrum (Rynek)</div>
+				<div class="menu__bottom--settings-button" name="polonia" @click.stop="selectLocal">Parking Polonia</div>
 			</div>
 		</div>
 	</nav>
@@ -64,6 +74,41 @@ export default {
 		},
 		menuBottomClick() {
 			this.menuBottomToggle ? this.menuBottomToggle = false : this.menuBottomToggle=true;
+		},
+		selectLocal(e) {
+			const name = e.srcElement.getAttribute('name')
+			switch (name) {
+				case "current":
+					if (navigator.geolocation) {
+						this.$store.commit("switchGeoTracking", true)
+					} else {
+						this.$store.dispatch("useGeoPosition")
+					}
+					break;
+				case "map":
+					console.log("map")
+					break;
+				case "pkp":
+					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("updateChoosenPosition", [22.7764096, 49.7832626])
+					this.$store.commit("updateCurrentAdress", "Dworzec Główny PKP, Przemyśl")
+					break;
+				case "pks":
+					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("updateChoosenPosition", [22.7756452, 49.7840627])
+					this.$store.commit("updateCurrentAdress", "Dworzec PKS, Przemyśl")
+					break;
+				case "polonia":
+					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("updateChoosenPosition", [22.7591040, 49.7798144])
+					this.$store.commit("updateCurrentAdress", "Parking Polonia, Przemyśl")
+					break;
+				default:
+					this.$store.commit("switchGeoTracking", false)
+					this.$store.commit("updateChoosenPosition", [22.7695915, 49.7822044])
+					this.$store.commit("updateCurrentAdress", "Rynek, Przemyśl")
+			}
+			this.menuBottomToggle = false;
 		}
 	},
 
@@ -109,12 +154,13 @@ export default {
 	padding-top: 10px;
 
 	&:before {
-		content: "menu";
+		content: "•••";
 		font: $h3;
 		width: 90px;
 		height: 45px;
 		position: absolute;
 		text-align: center;
+		color: $grey;
 		background-color: white;
 		border: $border-grey;
 		border-radius: 45px 45px 0 0;
@@ -164,25 +210,83 @@ export default {
 		height: 60px;
 		background-color: $dark-blue;
 		grid-column: 1/-1;
-		display: flex;
+		display: grid;
+		grid-template-columns: auto auto;
 		align-items: center;
-		justify-content: space-around;
 		pointer-events: auto;
+		padding: 0 10px 0 10px;
 
 		&--title {
-			font: $h2;
+			grid-column: 1/2;
+			grid-row: 1/2;
+			font: $h4;
 			color: white;
+			margin-top: auto;
+		}
+
+		&--address {
+			grid-column: 1/2;
+			grid-row: 2/3;
+			font: $h3;
+			color: white;
+			margin-bottom: auto;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+			overflow: hidden;
+		}
+
+		&--img {
+			grid-column: 2/3;
+			grid-row: 1/3;
+			margin-left: auto;
+			height: 40px;
+			filter: invert(1);
 		}
 		
 		&--settings {
 			position: absolute;
 			background-color: white;
-			opacity: 0.75;
 			width: 100vw;
-			height: 100vh;
 			bottom: 0;
 			z-index: 11;
 			transform: translateY(100%);
+			display: grid;
+			grid-gap: 10px;
+			grid-template-columns: 100%;
+			justify-content: center;
+			justify-items: center;
+			align-content: start;
+			padding: 10px;
+			border-top: $border-grey;
+			transition: transform 0.5s ease-in-out;
+			
+			&-div {
+				width: 100%;
+				display: grid;
+				grid-template-columns: auto auto;
+				align-items: center;
+			}
+
+			&-title {
+				grid-column: 1/2;
+				font: $h2;
+			}
+
+			&-close {
+				grid-column: 2/3;
+				height: 30px;
+				margin-left: auto;
+			}
+
+			&-button {
+				width: 100%;
+				font: $h2;
+				background-color: $grey;
+				border: $border-grey;
+				color: white;
+				padding: 10px;
+				text-align: center;
+			}
 		}
 	}
 }

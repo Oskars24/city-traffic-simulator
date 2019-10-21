@@ -31,11 +31,23 @@
 
         <vl-geoloc @update:position="geolocPosition = $event">
             <template slot-scope="geoloc">
+                
                 <vl-feature v-if="geoloc.position" id="position-feature">
                     <vl-geom-point :coordinates="geoloc.position"></vl-geom-point>
+                    <!---
                     <vl-style-box>
                         <vl-style-icon :src='icon' :scale="0.4" :anchor="[0.5, 1]"></vl-style-icon>
                     </vl-style-box>
+                    -->
+                </vl-feature>
+                <vl-feature>
+                    <vl-geom-point :coordinates="$store.state.choosenPosition"></vl-geom-point>
+                    <vl-style-box>
+                        <vl-style-icon :src='icon' :scale="0.4" :anchor="[0.5, 1]"></vl-style-icon>
+                    </vl-style-box>
+                </vl-feature>
+                <vl-feature>
+                    <vl-geom-line-string :coordinates="checkUserPath"></vl-geom-line-string>
                 </vl-feature>
                 <vl-feature>
                     <vl-geom-line-string :coordinates="mapRoute"></vl-geom-line-string>
@@ -90,6 +102,13 @@ export default {
         this.setPois
     },
     computed: {
+        checkUserPath() {
+            if (this.$store.state.userPath.length === 0) {
+                return [[0,0]]
+            } else {
+                return this.$store.state.userPath
+            }
+        },
         setRoute() {
             fetch("https://routing.openstreetmap.de/routed-foot/route/v1/walking/"+this.point1+";"+this.point2+"?overview=full")
             .then((response) => response.json())
