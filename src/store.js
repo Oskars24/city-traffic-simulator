@@ -1,10 +1,12 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import localForage from "localforage"
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
     state: {
+        poi: [],
         startTracking: false,
         enableTracking: false,
         useGeoPosition: false,
@@ -14,6 +16,9 @@ export default new Vuex.Store({
         userPath: []
     },
     mutations: {
+        setPoi(state, payload) {
+            state.poi=payload
+        },
         switchStartTracking(state, payload) {
             state.startTracking=payload
         },
@@ -43,7 +48,6 @@ export default new Vuex.Store({
                 return el.length > payload
             })
             state.userPath = reduce
-            
         }
     },
     actions: {
@@ -64,6 +68,13 @@ export default new Vuex.Store({
                     context.commit("updateChoosenPosition",[position.coords.longitude, position.coords.latitude])
                 })
             }
-        }
+        },
+        getPoi(context, payload) {
+            const request = async () => {
+                const response = await localForage.getItem('poi')
+                context.commit("setPoi", await response)
+            }
+            request();
+        },
     }
 })

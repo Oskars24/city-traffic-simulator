@@ -1,9 +1,22 @@
 <template>
     <div class="mapaPage">
+        <div class="iconsLeft">
+            <div class="iconsRight__icon" @click="plusClick">
+                <img class="iconsRight__icon--img" src="../assets/icons/plus.svg" >
+            </div>
+            <div class="iconsRight__icon" @click="minusClick">
+                <img class="iconsRight__icon--img" src="../assets/icons/minus.svg" >
+            </div>
+        </div>
+        <div class="iconsTop">
+            <div class="iconsRight__icon">
+                <img class="iconsRight__icon--img" :style="{transform: 'rotate('+rotation+'rad)', transition: 'transform .3s'}" @click="mapAlign" src="../assets/icons/north.svg" >
+            </div>
+        </div>
         <div class="iconsRight">
             <div class="iconsRight__icon" v-if="$store.state.enableTracking">
                 <img class="iconsRight__icon--img" src="../assets/icons/tracking_save.svg" >
-            </div>
+            </div> 
             <div class="iconsRight__icon" v-if="$store.state.enableTracking">
                 <img class="iconsRight__icon--img" src="../assets/icons/tracking_erase.svg" @click="eraseTracking">
             </div>
@@ -15,19 +28,30 @@
                 <img class="iconsRight__icon--img" src="../assets/icons/tracking.svg" >
             </div>
             <div class="iconsRight__icon" @click="geoCrossClick">
-                <img class="iconsRight__icon--img" src="../assets/icons/geocross.svg" >
+                <img class="iconsRight__icon--img" src="../assets/icons/geocross_center.svg">
             </div>
         </div>
 
         <vl-map class="globalMap" ref="map" :load-tiles-while-animating="true" :load-tiles-while-interacting="true">
-            <vl-view ref="view" :center="getChoosenPosition" :extent.sync="extent" :zoom='16' :min-zoom='11' :max-zoom='19'></vl-view>
+            <vl-view ref="view" :rotation.sync="rotation" :center="getChoosenPosition" :extent.sync="extent" :zoom.sync='zoom' :min-zoom.sync='zoomMin' :max-zoom.sync='zoomMax'></vl-view>
             
             <!-- AKTUALNA LOKALIZACJA -->
             <vl-geoloc @update:position='updateGeoPosition($event)'>
                 <vl-feature>
                     <vl-geom-point :coordinates="getChoosenPosition"></vl-geom-point>
+                    <vl-style-box>
+                        <vl-style-icon :src='icon' :anchor="[0.5, 1]"></vl-style-icon>
+                    </vl-style-box>
                 </vl-feature>
             </vl-geoloc>
+
+            <!-- POIS -->
+            <vl-layer-vector :z-index="1">
+                <vl-source-vector :features="filtered"></vl-source-vector>
+                <vl-style-box>
+                        <vl-style-icon :src='icon2' :anchor="[0.5, 1]"></vl-style-icon>
+                    </vl-style-box>
+            </vl-layer-vector>
 
             <!-- ŚCIEŻKA ŚLEDZENIA -->
             <vl-feature>
@@ -35,7 +59,7 @@
             </vl-feature>
 
             <!-- MAPA GŁOWNA -->
-            <vl-layer-tile>
+            <vl-layer-tile :z-index="0">
                 <vl-source-xyz url="https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png"></vl-source-xyz>
             </vl-layer-tile>
         </vl-map>
@@ -52,9 +76,14 @@ export default {
   name: 'mapa',
   data () {
         return {
-            icon: require("@/assets/marker.png"),
+            zoom: 16,
+            zoomMin: 11,
+            zoomMax: 19,
+            icon: require("@/assets/icons/location.svg"),
+            icon2: require("@/assets/icons/info.svg"),
             center: [22.7695915, 49.7822044],
             extent: [22.712516, 49.820265, 22.855682, 49.745781],
+            rotation: 0,
         }
     },
     methods: {
@@ -89,6 +118,20 @@ export default {
         eraseTracking() {
             this.$store.commit("reduceUserPath", undefined)
             this.$store.commit("updateUserPath", {empty: [], coords: this.$store.state.geoPosition})
+        },
+        mapAlign() {
+            this.$refs.view.animate({rotation : 0})
+        },
+        plusClick() {
+            if (this.zoom < this.zoomMax) {
+                this.zoom++
+            }
+            
+        },
+        minusClick() {
+            if (this.zoom > this.zoomMin) {
+                this.zoom--
+            }
         }
         
     },
@@ -99,7 +142,27 @@ export default {
             } else {
                 return this.$store.state.choosenPosition
             }
-        }
+        },
+        filtered() {
+                const poi = this.$store.state.poi
+                const range = 0.001
+                const lon = this.$store.state.geoPosition[0]
+                const lat = this.$store.state.geoPosition[1]
+                const lonUp = lon + range
+                const latUp = lat + range
+                const lonDown = lon - range
+                const latDown = lat - range
+
+                const rangePois = poi.filter(function(el) {
+                    let poiLon = el.geometry.coordinates[0]
+                    let poiLat = el.geometry.coordinates[1]
+                    return (
+                        (((lon < poiLon) && (poiLon < lonUp)) || ((lonDown < poiLon) && (poiLon < lon))) &&
+                        (((lat < poiLat) && (poiLat < latUp)) || ((latDown < poiLat) && (poiLat < lat)))
+                    )
+                })
+                return rangePois
+            }
     }
 }
 </script>
@@ -112,10 +175,23 @@ export default {
     align-items: center;
 }
 
+.iconsLeft {
+    left: 5px;
+    top: 10px;
+}
+
+.iconsTop {
+    right: 5px;
+    top: 10px;
+}
+
 .iconsRight {
-    position: absolute;
     right: 5px;
     bottom: 10px;
+}
+
+.iconsRight, .iconsTop, .iconsLeft {
+    position: absolute;
     z-index: 1;
     display: grid;
     grid-row-gap: 5px;
