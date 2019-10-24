@@ -252,7 +252,7 @@ export default {
 		&--settings {
 			position: absolute;
 			background-color: white;
-			width: 100vw;
+			width: 100%;
 			bottom: 0;
 			z-index: 11;
 			transform: translateY(100%);

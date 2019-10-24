@@ -44,7 +44,6 @@ export default new Vuex.Store({
         
         noclegi(state, getters) {
             const poi = state.poi
-            console.log(state)
             const noclegi = poi.filter(function(el) {
                 const prop = el.properties
                 const tourism_tags = ["hotel", "chalet", "guest_house", "hostel", "camp_site", "motel"]
@@ -52,7 +51,6 @@ export default new Vuex.Store({
                     return tourism_tags.includes(prop.tourism)
                 } 
             })
-            console.log(noclegi)
             noclegi.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
             return noclegi
         }

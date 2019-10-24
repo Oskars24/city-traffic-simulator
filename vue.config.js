@@ -1,6 +1,7 @@
 //module.exports = {devServer: {https: true}}
 
 module.exports = {
+    publicPath: '/city-traffic-simulator/',
     chainWebpack: config => {
     config
         .module

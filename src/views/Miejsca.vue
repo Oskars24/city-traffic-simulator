@@ -28,9 +28,11 @@
         <div class="carousel">
             <!-- TUTAJ BĘDZIE CARUZELA V-FOR -->
         </div>
+
+        
         <div class="titleBar bg-red">
             <span class="titleBar__title">Noclegi:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
+            <router-link :to="'/viewall/noclegi'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
             <div class="carousel__div" v-for="place in noclegi.slice(0,5)" :key="place.id">
@@ -39,6 +41,8 @@
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </div>
         </div>
+
+
         <div class="titleBar bg-brown">
             <span class="titleBar__title">Puby:</span>
             <span class="titleBar__more">Pokaż więcej</span>
@@ -165,7 +169,6 @@ export default {
     color: white;
     border-top: $border-grey;
     border-radius: 0 0 7px 7px;
-
 
     &__title {
         font: $h2;

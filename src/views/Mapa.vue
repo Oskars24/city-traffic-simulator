@@ -87,7 +87,7 @@ export default {
         }
     },
     methods: {
-        ...mapMutations(["updateGeoPosition", "updateUserPath", "switchEnableTracking", "reduceUserPath"]),
+        ...mapMutations(["updateGeoPosition", "updateUserPath", "switchEnableTracking", "reduceUserPath", "switchStartTracking"]),
         ...mapActions(["getCurrentAdress"]),
         updateGeoPositionEvent(event) {
             this.updateGeoPosition(event)

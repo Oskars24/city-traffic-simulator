@@ -128,4 +128,16 @@ html, body {
 .slide-leave-to {
     transform: translateY(-100vh);
 }
+
+@media (min-width: 361px) {
+    .all {
+        max-width: 360px;
+        max-height: 640px;
+        margin: 0 auto 0 auto;
+    }
+    .router {
+        width: 100%;
+    }
+ }
+
 </style>

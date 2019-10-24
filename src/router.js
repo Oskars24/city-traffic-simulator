@@ -6,6 +6,7 @@ import Miejsca from './views/Miejsca.vue'
 import Trasy from './views/Trasy.vue'
 import Mapa from './views/Mapa.vue'
 import MojPlan from './views/MojPlan.vue'
+import ViewAll from './views/ViewAll.vue'
 
 Vue.use(Router)
 
@@ -42,6 +43,11 @@ export default new Router({
       path: '/mojplan',
       name: 'mojplan',
       component: MojPlan
+    },
+    {
+      path: '/viewall/:name',
+      name: 'viewall',
+      component: ViewAll
     },
   ]
 })
