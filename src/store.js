@@ -15,6 +15,48 @@ export default new Vuex.Store({
         currentAdress: "",
         userPath: []
     },
+    getters: {
+        countDistance(state) {
+            return coords => {
+                const x = coords[0]
+                const y = coords[1]
+                let a = state.choosenPosition[0]
+                let b = state.choosenPosition[1]
+
+                if (state.useGeoPosition) {
+                    a = state.geoPosition[0]
+                    b = state.geoPosition[1]
+                }
+                const calculate = Math.sqrt(((a - x)**2) + (Math.cos(x * Math.PI/180) * (b - y))**2) * 40075.704/360
+                return calculate
+            }
+        },
+        
+        addUnits(state) {
+            return distance => {
+                if (distance < 1) {
+                    return `${Math.round(distance*1000)} m`
+                } else {
+                    return `${Math.round(distance*100)/100} km`
+                }
+            }
+        },
+        
+        noclegi(state, getters) {
+            const poi = state.poi
+            console.log(state)
+            const noclegi = poi.filter(function(el) {
+                const prop = el.properties
+                const tourism_tags = ["hotel", "chalet", "guest_house", "hostel", "camp_site", "motel"]
+                if ("tourism" in prop) {
+                    return tourism_tags.includes(prop.tourism)
+                } 
+            })
+            console.log(noclegi)
+            noclegi.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
+            return noclegi
+        }
+    },
     mutations: {
         setPoi(state, payload) {
             state.poi=payload

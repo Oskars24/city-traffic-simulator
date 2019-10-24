@@ -12,6 +12,7 @@
     "geojson": "^0.5.0",
     "google-polyline": "^1.0.3",
     "localforage": "^1.7.3",
+    "ol-ext": "^3.1.7",
     "osmtogeojson": "^3.0.0-beta.3",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",

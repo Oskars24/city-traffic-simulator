@@ -14,17 +14,17 @@
             </div>
         </div>
         <div class="iconsRight">
-            <div class="iconsRight__icon" v-if="$store.state.enableTracking">
+            <div class="iconsRight__icon" v-if="enableTracking">
                 <img class="iconsRight__icon--img" src="../assets/icons/tracking_save.svg" >
             </div> 
-            <div class="iconsRight__icon" v-if="$store.state.enableTracking">
+            <div class="iconsRight__icon" v-if="enableTracking">
                 <img class="iconsRight__icon--img" src="../assets/icons/tracking_erase.svg" @click="eraseTracking">
             </div>
-            <div class="iconsRight__icon" v-if="$store.state.enableTracking" @click="startTracking">
-                <img class="iconsRight__icon--img" src="../assets/icons/tracking_play.svg" v-if="!$store.state.startTracking">
-                <img class="iconsRight__icon--img" src="../assets/icons/tracking_pause.svg" v-if="$store.state.startTracking">
+            <div class="iconsRight__icon" v-if="enableTracking" @click="startTrackingClick">
+                <img class="iconsRight__icon--img" src="../assets/icons/tracking_play.svg" v-if="!startTracking">
+                <img class="iconsRight__icon--img" src="../assets/icons/tracking_pause.svg" v-if="startTracking">
             </div>
-            <div class="iconsRight__icon" @click="enableTracking">
+            <div class="iconsRight__icon" @click="enableTrackingClick">
                 <img class="iconsRight__icon--img" src="../assets/icons/tracking.svg" >
             </div>
             <div class="iconsRight__icon" @click="geoCrossClick">
@@ -36,26 +36,25 @@
             <vl-view ref="view" :rotation.sync="rotation" :center="getChoosenPosition" :extent.sync="extent" :zoom.sync='zoom' :min-zoom.sync='zoomMin' :max-zoom.sync='zoomMax'></vl-view>
             
             <!-- AKTUALNA LOKALIZACJA -->
-            <vl-geoloc @update:position='updateGeoPosition($event)'>
+            <vl-geoloc @update:position='updateGeoPositionEvent($event)'>
                 <vl-feature>
                     <vl-geom-point :coordinates="getChoosenPosition"></vl-geom-point>
                     <vl-style-box>
-                        <vl-style-icon :src='icon' :anchor="[0.5, 1]"></vl-style-icon>
+                        <vl-style-icon :src='icon' :scale="2.0" :anchor="[0.5, 1]"></vl-style-icon>
                     </vl-style-box>
                 </vl-feature>
             </vl-geoloc>
 
             <!-- POIS -->
             <vl-layer-vector :z-index="1">
-                <vl-source-vector :features="filtered"></vl-source-vector>
-                <vl-style-box>
-                        <vl-style-icon :src='icon2' :anchor="[0.5, 1]"></vl-style-icon>
-                    </vl-style-box>
+                <vl-source-cluster>
+                    <vl-source-vector :features="filtered"></vl-source-vector>
+                </vl-source-cluster>
             </vl-layer-vector>
 
             <!-- ŚCIEŻKA ŚLEDZENIA -->
             <vl-feature>
-                    <vl-geom-multi-line-string :coordinates="$store.state.userPath" v-if="$store.state.userPath.length!=0"></vl-geom-multi-line-string>
+                    <vl-geom-multi-line-string :coordinates="userPath" v-if="userPath.length!=0"></vl-geom-multi-line-string>
             </vl-feature>
 
             <!-- MAPA GŁOWNA -->
@@ -72,6 +71,7 @@ import urzad from '../assets/test.geojson'
 import osmtogeojson from 'osmtogeojson/index'
 import Style from 'ol/style/Style'
 import Icon from 'ol/style/Icon'
+import { mapState, mapMutations, mapActions} from "vuex";
 export default {
   name: 'mapa',
   data () {
@@ -87,37 +87,39 @@ export default {
         }
     },
     methods: {
-        updateGeoPosition(event) {
-            this.$store.commit("updateGeoPosition", event)
-            this.$store.dispatch("getCurrentAdress", event)
-            if (this.$store.state.startTracking) {
-                this.$store.commit("updateUserPath", {empty: null, coords:event})
+        ...mapMutations(["updateGeoPosition", "updateUserPath", "switchEnableTracking", "reduceUserPath"]),
+        ...mapActions(["getCurrentAdress"]),
+        updateGeoPositionEvent(event) {
+            this.updateGeoPosition(event)
+            this.getCurrentAdress(event)
+            if (this.startTracking) {
+                this.updateUserPath({empty: null, coords:event})
             }
         },
         geoCrossClick() {
-            if (this.$store.state.useGeoPosition) {
-                this.$refs.view.animate({center: this.$store.state.geoPosition})
+            if (this.useGeoPosition) {
+                this.$refs.view.animate({center: this.geoPosition})
             }
         },
-        enableTracking() {
-            if (this.$store.state.enableTracking) {
-                this.$store.commit("switchEnableTracking", false)
+        enableTrackingClick() {
+            if (this.enableTracking) {
+                this.switchEnableTracking(false)
             } else {
-                this.$store.commit("switchEnableTracking", true)
+                this.switchEnableTracking(true)
             }
         },
-        startTracking() {
-            if (this.$store.state.startTracking) {
-                this.$store.commit("switchStartTracking", false)
-                this.$store.commit("reduceUserPath", 1)
+        startTrackingClick() {
+            if (this.startTracking) {
+                this.switchStartTracking(false)
+                this.reduceUserPath(1)
             } else {
-                this.$store.commit("switchStartTracking", true)
-                this.$store.commit("updateUserPath", {empty: [], coords: this.$store.state.geoPosition})
+                this.switchStartTracking(true)
+                this.updateUserPath({empty: [], coords: this.geoPosition})
             }
         },
         eraseTracking() {
-            this.$store.commit("reduceUserPath", undefined)
-            this.$store.commit("updateUserPath", {empty: [], coords: this.$store.state.geoPosition})
+            this.reduceUserPath(undefined)
+            this.updateUserPath({empty: [], coords: this.geoPosition})
         },
         mapAlign() {
             this.$refs.view.animate({rotation : 0})
@@ -136,18 +138,19 @@ export default {
         
     },
     computed: {
+        ...mapState(["enableTracking", "startTracking", "userPath", "useGeoPosition", "geoPosition", "choosenPosition", "poi"]),
         getChoosenPosition() {
-            if (this.$store.state.useGeoPosition) {
-                return this.$store.state.geoPosition
+            if (this.useGeoPosition) {
+                return this.geoPosition
             } else {
-                return this.$store.state.choosenPosition
+                return this.choosenPosition
             }
         },
         filtered() {
-                const poi = this.$store.state.poi
+                const poi = this.poi
                 const range = 0.001
-                const lon = this.$store.state.geoPosition[0]
-                const lat = this.$store.state.geoPosition[1]
+                const lon = this.geoPosition[0]
+                const lat = this.geoPosition[1]
                 const lonUp = lon + range
                 const latUp = lat + range
                 const lonDown = lon - range
@@ -204,7 +207,7 @@ export default {
         height: 50px;
         background-color: white;
         border-radius: 100%;
-        border: $border-grey;
+        border: $border-light-grey;
 
         &--img {
              width: 70%;
@@ -213,7 +216,7 @@ export default {
 }
 
 .globalMap {
-    width: 100vw;
-    height: $fullheight;
+    width: 100%;
+    height: 100%;
 }
 </style>

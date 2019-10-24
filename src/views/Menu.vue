@@ -33,7 +33,7 @@
 		</router-link>
 		<div class="menu__bottom" @click.stop="menuBottomClick">
 			<span class="menu__bottom--title">Aktualna lokalizacja:</span>
-			<span class="menu__bottom--address">{{ $store.state.currentAdress }}</span>
+			<span class="menu__bottom--address">{{ currentAdress }}</span>
 			<img class="menu__bottom--img" src="../assets/icons/settings.svg">
 			<div class="menu__bottom--settings" :class="{'translateZero':menuBottomToggle}">
 				<div class="menu__bottom--settings-div">
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapState, mapMutations, mapActions} from "vuex";
 export default {
 	name: 'appmenu',
 	data () {
@@ -62,7 +63,12 @@ export default {
 				currentRoute: this.$route.name
 			}
 	},
+	computed: {
+		...mapState(["currentAdress"])
+	},
 	methods: {
+		...mapMutations(["switchUseGeoPosition", "updateChoosenPosition", "updateCurrentAdress"]),
+		...mapActions(["useGeoPosition"]),
 		menuClick() {
 			if (this.currentRoute === "home") {
 				this.$router.push('/mapa').catch(err => {})
@@ -80,33 +86,33 @@ export default {
 			switch (name) {
 				case "current":
 					if (navigator.geolocation) {
-						this.$store.commit("switchUseGeoPosition", true)
+						this.switchUseGeoPosition(true)
 					} else {
-						this.$store.dispatch("useGeoPosition")
+						this.useGeoPosition()
 					}
 					break;
 				case "map":
 					console.log("map")
 					break;
 				case "pkp":
-					this.$store.commit("switchUseGeoPosition", false)
-					this.$store.commit("updateChoosenPosition", [22.7764096, 49.7832626])
-					this.$store.commit("updateCurrentAdress", "Dworzec Główny PKP, Przemyśl")
+					this.switchUseGeoPosition(false)
+					this.updateChoosenPosition([22.7764096, 49.7832626])
+					this.updateCurrentAdress("Dworzec Główny PKP, Przemyśl")
 					break;
 				case "pks":
-					this.$store.commit("switchUseGeoPosition", false)
-					this.$store.commit("updateChoosenPosition", [22.7756452, 49.7840627])
-					this.$store.commit("updateCurrentAdress", "Dworzec PKS, Przemyśl")
+					this.switchUseGeoPosition(false)
+					this.updateChoosenPosition([22.7756452, 49.7840627])
+					this.updateCurrentAdress("Dworzec PKS, Przemyśl")
 					break;
 				case "polonia":
-					this.$store.commit("switchUseGeoPosition", false)
-					this.$store.commit("updateChoosenPosition", [22.7591040, 49.7798144])
-					this.$store.commit("updateCurrentAdress", "Parking Polonia, Przemyśl")
+					this.switchUseGeoPosition(false)
+					this.updateChoosenPosition([22.7591040, 49.7798144])
+					this.updateCurrentAdress("Parking Polonia, Przemyśl")
 					break;
 				default:
-					this.$store.commit("switchUseGeoPosition", false)
-					this.$store.commit("updateChoosenPosition", [22.7695915, 49.7822044])
-					this.$store.commit("updateCurrentAdress", "Rynek, Przemyśl")
+					this.switchUseGeoPosition(false)
+					this.updateChoosenPosition([22.7695915, 49.7822044])
+					this.updateCurrentAdress("Rynek, Przemyśl")
 			}
 			this.menuBottomToggle = false;
 		}
@@ -150,7 +156,7 @@ export default {
 	grid-template-columns: repeat(4, 1fr);
 	justify-items: center;
 	background-color: white;
-	border-top: $border-grey;
+	border-top: $border-light-grey;
 	padding-top: 10px;
 
 	&:before {
@@ -162,7 +168,7 @@ export default {
 		text-align: center;
 		color: $grey;
 		background-color: white;
-		border: $border-grey;
+		border: $border-light-grey;
 		border-radius: 45px 45px 0 0;
 		top: -26px;
 		z-index: -1;
@@ -257,7 +263,7 @@ export default {
 			justify-items: center;
 			align-content: start;
 			padding: 10px;
-			border-top: $border-grey;
+			border-top: $border-light-grey;
 			transition: transform 0.5s ease-in-out;
 			
 			&-div {
@@ -282,7 +288,7 @@ export default {
 				width: 100%;
 				font: $h2;
 				background-color: $grey;
-				border: $border-grey;
+				border: $border-light-grey;
 				color: white;
 				padding: 10px;
 				text-align: center;

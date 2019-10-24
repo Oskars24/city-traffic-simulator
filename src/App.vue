@@ -2,7 +2,7 @@
 <div class="all" v-cloak>
     <appmenu></appmenu>
     <transition name="slide" mode="out-in" appear v-cloak>
-        <router-view></router-view>
+        <router-view class="router"></router-view>
     </transition>
 </div>
 </template>
@@ -11,6 +11,7 @@
 import appmenu from './views/Menu.vue'
 import osmtogeojson from 'osmtogeojson/index'
 import localForage from "localforage"
+import { mapMutations, mapActions} from "vuex";
 
 export default {
     name: 'App',
@@ -23,23 +24,25 @@ export default {
         appmenu
     },
     methods: {
+        ...mapMutations(["switchUseGeoPosition", "updateGeoPosition"]),
+        ...mapActions(["getCurrentAdress", "getPoi"]),
         currentPosition() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
-                    this.$store.commit("switchUseGeoPosition", true)
-                    this.$store.commit("updateGeoPosition", [position.coords.longitude, position.coords.latitude])
-                    this.$store.dispatch("getCurrentAdress", [position.coords.longitude, position.coords.latitude])
+                    this.switchUseGeoPosition(true)
+                    this.updateGeoPosition([position.coords.longitude, position.coords.latitude])
+                    this.getCurrentAdress([position.coords.longitude, position.coords.latitude])
                 })
             }
         },
         setPois() {
             const request = async () => {
-                const response = await fetch("https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B%0Anode%5B~%22%5E%28amenity%7Cbuilding%7Ccraft%7Cemergency%7Chistoric%7Cleisure%7Cplace%7Cshop%7Csport%7Ctourism%29%24%22~%22.%22%5D%2849.57307649%2C%2022.25362985%2C%2049.94949016%2C%2023.09285114%29%3B%0Aout%3B")
+                const response = await fetch("https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B%0Anode%5B~%22%5E%28amenity%7Chistoric%7Cleisure%7Cshop%7Ctourism%29%24%22~%22.%22%5D%2849.74755%2C22.707710%2C49.82137%2C22.86117%29%3B%0Aout%3B")
                 const json = await response.json()
                 const poi=osmtogeojson(await json).features
                 localForage.setItem('poi_date', new Date())
                 localForage.setItem('poi', await poi)
-                this.$store.dispatch("getPoi")
+                this.getPoi()
             }
 
             const checkPoiDate = (async () => {
@@ -52,7 +55,7 @@ export default {
                     if (poiFullDate != fullDate) {
                         request()
                     } else {
-                        this.$store.dispatch("getPoi")
+                        this.getPoi()
                     }
                 }
                 catch(err) {
@@ -106,6 +109,11 @@ html, body {
     height: $fullheight;
     overflow: hidden;
     position: relative;
+}
+
+.router {
+    width: 100vw;
+    height: $fullheight;
 }
 
 .slide-enter-active, .slide-leave-active {

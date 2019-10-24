@@ -3,13 +3,16 @@ $blue: #149CC0;
 $dark-blue: #005CA2;
 $dark-yellow: #F1A400;
 $green: #69B92D;
+$dark-green: #4b9811;
 $red:#A92924;
 $grey: #707070;
 $light-grey: #DBDBDB;
 $dark-grey: #232323;
+$brown: #a94200;
 
 //BORDERS:
-$border-grey: solid 2px $light-grey;
+$border-light-grey: solid 2px $light-grey;
+$border-grey: solid 2px $grey;
 
 // FONTS:
 $h1: bold 22px Open Sans, sans-serif;
@@ -24,6 +27,10 @@ $h6: 700 10px Open Sans, sans-serif;
     background-color: $blue;
 }
 
+.bg-dark-blue {
+    background-color: $dark-blue;
+}
+
 .bg-yellow {
     background-color: $dark-yellow;
 }
@@ -32,12 +39,20 @@ $h6: 700 10px Open Sans, sans-serif;
     background-color: $green;
 }
 
+.bg-dark-green {
+    background-color: $dark-green;
+}
+
 .bg-red {
     background-color: $red;
 }
 
 .bg-grey {
     background-color: $grey;
+}
+
+.bg-brown {
+    background-color: $brown;
 }
 
 // CONSTANTS
