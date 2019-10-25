@@ -16,11 +16,17 @@
 
         <div class="titleBar bg-yellow">
             <span class="titleBar__title">Rekreacja:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
+            <router-link :to="'/viewall/rekreacja'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <!-- TUTAJ BĘDZIE CARUZELA V-FOR -->
+            <div class="carousel__div" v-for="place in rekreacja.slice(0,5)" :key="place.id">
+                <img class="carousel__div--img" src="../assets/fakephoto.png">
+                <div class="carousel__div--title">{{place.properties.name}}</div>
+                <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
+            </div>
         </div>
+
+
         <div class="titleBar bg-green">
             <span class="titleBar__title">Gastronomia:</span>
             <span class="titleBar__more">Pokaż więcej</span>
@@ -72,31 +78,9 @@ import { mapGetters} from "vuex";
 export default {
     name: 'miejsca',
     computed: {
-        ...mapGetters(["countDistance", "addUnits", "noclegi"])
+        ...mapGetters(["countDistance", "addUnits", "rekreacja", "noclegi"])
     },
-    methods: {
-        /*
-        countDistance(coords) {
-            const x = coords[0]
-            const y = coords[1]
-            let a = this.$store.state.choosenPosition[0]
-            let b = this.$store.state.choosenPosition[1]
-
-            if (this.$store.state.useGeoPosition) {
-                a = this.$store.state.geoPosition[0]
-                b = this.$store.state.geoPosition[1]
-            }
-            const calculate = Math.sqrt(((a - x)**2) + (Math.cos(x * Math.PI/180) * (b - y))**2) * 40075.704/360
-            return calculate
-        },
-        addUnits(distance) {
-            if (distance < 1) {
-                return `${Math.round(distance*1000)} m`
-            } else {
-                return `${Math.round(distance*100)/100} km`
-            }
-        }
-    },
+    /*
     computed: {
         atrakcje() {
             const poi = this.$store.state.poi
@@ -120,39 +104,9 @@ export default {
                 }
             })
             return atrakcje
-        },
-        rekreacja() {
-            const poi = this.$store.state.poi
-            const rekreacja = poi.filter(function(el) {
-                const prop = el.properties
-                const leisure_tags = ["cinema", "marketplace", "place_of_worship", "theatre"]
-                if ("leisure" in prop) {
-                    console.log(prop.leisure)
-                    //return leisure_tags.includes(prop.leisure)
-                } 
-            })
-            return rekreacja
-        },
-        /*
-        noclegi() {
-            const poi = this.$store.state.poi
-            const noclegi = poi.filter(function(el) {
-                const prop = el.properties
-                const tourism_tags = ["hotel", "chalet", "guest_house", "hostel", "camp_site", "motel"]
-                if ("tourism" in prop) {
-                    return tourism_tags.includes(prop.tourism)
-                } 
-            })
-            console.log(noclegi)
-            noclegi.sort((a, b) => (this.countDistance(a.geometry.coordinates) > this.countDistance(b.geometry.coordinates)) ? 1 : -1)
-            return noclegi
         }
-        */
-    },
-    created() {
-        //console.log(this.noclegi)
     }
-
+    */
 }
 </script>
 

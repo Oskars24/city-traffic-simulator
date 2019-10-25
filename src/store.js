@@ -18,8 +18,15 @@ export default new Vuex.Store({
     getters: {
         countDistance(state) {
             return coords => {
-                const x = coords[0]
-                const y = coords[1]
+                let x=0
+                let y=0
+                if (typeof coords[0] != "number") {
+                    x = coords[0][0][0]
+                    y = coords[0][0][1]
+                } else {
+                    x = coords[0]
+                    y = coords[1]
+                }
                 let a = state.choosenPosition[0]
                 let b = state.choosenPosition[1]
 
@@ -41,10 +48,24 @@ export default new Vuex.Store({
                 }
             }
         },
+        rekreacja(state, getters) {
+            const rekreacja = state.poi.filter(function(el) {
+                const prop = el.properties
+                const leisure_tags = ["beach_resort", "bowling_alley", "firepit", "fitness_centre", "golf_course", "horse_riding", "ice_rink", "miniature_golf", "pitch", "sauna", "sports_centre", "stadium", "swimming_area", "swimming_pool", "trampoline_park", "water_park"]
+                const sport_tags = ["shooting", "bowling", "icerink", "free_flying", "skiing"]
+                if ("leisure" in prop) {
+                    return leisure_tags.includes(prop.leisure)
+                } else if ("sport" in prop) {
+                    return sport_tags.includes(prop.sport)
+                }
+            })
+            
+            rekreacja.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
+            return rekreacja
+        },
         
         noclegi(state, getters) {
-            const poi = state.poi
-            const noclegi = poi.filter(function(el) {
+            const noclegi = state.poi.filter(function(el) {
                 const prop = el.properties
                 const tourism_tags = ["hotel", "chalet", "guest_house", "hostel", "camp_site", "motel"]
                 if ("tourism" in prop) {

@@ -4,13 +4,14 @@
             <router-link :to="{ name: 'miejsca'}" tag="span" class="pageTitle__prev">⇠</router-link>
             <span class="pageTitle__title">{{pageTitle}}</span>
         </div>
-        <div class="place"  v-for="place in placesArray" :key="place.id">
+        <div class="place"  v-for="place in placesArray" :key="place.id" v-show="place.properties.name">
             <img class="place__img" src="../assets/fakephoto.png">
             <div class="place__title">{{place.properties.name}}</div>
             <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
-            <div class="place__desc">{{place.properties.description}}</div>
-            <div class="place__desc" v-if="!place.properties.description">
+            <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
+            <div class="place__desc" v-else>
                 Brak opisu w bazie danych.<br>
+                <a :href="'https://www.openstreetmap.org/'+place.id" target="_blank">Otwórz w OSM</a><br>
                 <a :href="'https://www.openstreetmap.org/edit?'+place.id.replace('/','=')" target="_blank">Edytuj w OSM</a>
             </div>
         </div>
