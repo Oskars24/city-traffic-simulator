@@ -60,7 +60,6 @@ export default {
 			return {
 				menuToggle: true,
 				menuBottomToggle: false,
-				currentRoute: this.$route.name
 			}
 	},
 	computed: {
@@ -70,13 +69,7 @@ export default {
 		...mapMutations(["switchUseGeoPosition", "updateChoosenPosition", "updateCurrentAdress"]),
 		...mapActions(["useGeoPosition"]),
 		menuClick() {
-			if (this.currentRoute === "home") {
-				this.$router.push('/mapa').catch(err => {})
-			}
-			if (this.$route.name != "home") {
 				this.menuToggle ? this.menuToggle = false : this.menuToggle = true
-			}
-			this.currentRoute = this.$route.name
 		},
 		menuBottomClick() {
 			this.menuBottomToggle ? this.menuBottomToggle = false : this.menuBottomToggle=true;

@@ -7,6 +7,7 @@ import Trasy from './views/Trasy.vue'
 import Mapa from './views/Mapa.vue'
 import MojPlan from './views/MojPlan.vue'
 import ViewAll from './views/ViewAll.vue'
+import Szczegoly from './views/Szczegoly.vue'
 
 Vue.use(Router)
 
@@ -48,6 +49,11 @@ export default new Router({
       path: '/viewall/:name',
       name: 'viewall',
       component: ViewAll
+    },
+    {
+      path: '/szczegoly/:id',
+      name: 'szczegoly',
+      component: Szczegoly
     },
   ]
 })

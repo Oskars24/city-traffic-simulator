@@ -2,24 +2,19 @@
     <div class="viewAllPage">
         <div class="pageTitle bg-blue">
             <router-link :to="{ name: 'miejsca'}" tag="span" class="pageTitle__prev">⇠</router-link>
-            <span class="pageTitle__title">{{pageTitle}}</span>
+            <span class="pageTitle__title">{{pageTitle.replace("_", " ")}}</span>
         </div>
-        <div class="place"  v-for="place in placesArray" :key="place.id" v-show="place.properties.name">
+        <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="place"  v-for="place in placesArray" :key="place.id"> <!--v-show="place.properties.name"-->
             <img class="place__img" src="../assets/fakephoto.png">
             <div class="place__title">{{place.properties.name}}</div>
             <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
             <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
-            <div class="place__desc" v-else>
-                Brak opisu w bazie danych.<br>
-                <a :href="'https://www.openstreetmap.org/'+place.id" target="_blank">Otwórz w OSM</a><br>
-                <a :href="'https://www.openstreetmap.org/edit?'+place.id.replace('/','=')" target="_blank">Edytuj w OSM</a>
-            </div>
-        </div>
+        </router-link>
     </div>
 </template>
 
 <script>
-import { mapGetters} from "vuex";
+import { mapGetters } from "vuex";
 
 export default {
     name: 'viewall',
@@ -46,7 +41,7 @@ export default {
 }
 
 .pageTitle {
-    text-transform: capitalize;
+    text-transform: uppercase;
     height: 45px;
     margin-bottom: 5px;
     display: flex;

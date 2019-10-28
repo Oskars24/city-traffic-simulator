@@ -48,22 +48,64 @@ export default new Vuex.Store({
                 }
             }
         },
+
+        atrakcje(state, getters) {
+            const atrakcje = state.poi.filter(function(el) {
+                const prop = el.properties
+                const amenity_tags = ["casino", "cinema", "fountain", "planetarium", "theatre", "monastery", "place_of_worship"]
+                const historic_tags = ["aircraft","aqueduct","battlefield","cannon","castle","castle_wall","church","city_gate","citywalls","farm","fort","manor","memorial","monument","ruins","rune_stone","ship","tomb","tower"]
+                const leisure_tags =["beach_resort", "bowling_alley", "dance", "disc_golf_course", "escape_game", "golf_course", "horse_riding", "ice_rink", "marina", "miniature_golf", "nature_reserve", "park", "sauna", "swimming_area", "swimming_pool", "water_park"]
+                const tourism_tags = ["aquarium", "artwork", "attraction", "gallery", "museum", "theme_park", "viewpoint", "zoo"]
+                const attraction_tags = ["amusement_ride","animal", "big_wheel", "bumper_car", "bungee_jumping", "carousel", "dark_ride", "drop_tower", "log_flume", "maze", "pirate_ship", "river_rafting", "roller_coaster", "summer_toboggan", "swing_carousel", "train", "water_slide"]
+                if ("amenity" in prop) {
+                    return amenity_tags.includes(prop.amenity)
+                } else if ("historic" in prop) {
+                    return historic_tags.includes(prop.historic)
+                } else if ("leisure" in prop) {
+                    return leisure_tags.includes(prop.leisure)
+                } else if ("tourism" in prop) {
+                    return tourism_tags.includes(prop.tourism)
+                } else if ("attraction" in prop) {
+                    return attraction_tags.includes(prop.attraction)
+                }
+            })
+            
+            atrakcje.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
+            return atrakcje
+        },
+
         rekreacja(state, getters) {
             const rekreacja = state.poi.filter(function(el) {
                 const prop = el.properties
-                const leisure_tags = ["beach_resort", "bowling_alley", "firepit", "fitness_centre", "golf_course", "horse_riding", "ice_rink", "miniature_golf", "pitch", "sauna", "sports_centre", "stadium", "swimming_area", "swimming_pool", "trampoline_park", "water_park"]
-                const sport_tags = ["shooting", "bowling", "icerink", "free_flying", "skiing"]
+                const leisure_tags = ["beach_resort", "bowling_alley", "firepit", "pitch", "fitness_centre", "golf_course", "horse_riding", "ice_rink", "miniature_golf", "sauna", "sports_centre", "stadium", "swimming_area", "swimming_pool", "trampoline_park", "water_park"]
+                const sport_tags = ["shooting", "bowling", "icerink", "free_flying", "skiing", "kayak", "tennis"]
+                const attraction_tags = ["summer_toboggan"]
                 if ("leisure" in prop) {
-                    return leisure_tags.includes(prop.leisure)
+                    return leisure_tags.includes(prop.leisure) && prop.amenity != "school"
                 } else if ("sport" in prop) {
-                    return sport_tags.includes(prop.sport)
+                    return sport_tags.includes(prop.sport) && prop.route != "piste"
+                } else if ("attraction" in prop) {
+                    return attraction_tags.includes(prop.attraction)
                 }
             })
             
             rekreacja.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
             return rekreacja
         },
-        
+
+        gastronomia(state, getters) {
+            const gastronomia = state.poi.filter(function(el) {
+                const prop = el.properties
+                const amenity_tags = ["bbq", "biergarten", "cafe", "fast_food", "food_court", "restaurant"]
+                if ("amenity" in prop) {
+                    return amenity_tags.includes(prop.amenity)
+                }
+            })
+            
+            gastronomia.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
+            return gastronomia
+        },
+
         noclegi(state, getters) {
             const noclegi = state.poi.filter(function(el) {
                 const prop = el.properties
@@ -74,7 +116,35 @@ export default new Vuex.Store({
             })
             noclegi.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
             return noclegi
-        }
+        },
+
+        puby(state, getters) {
+            const puby = state.poi.filter(function(el) {
+                const prop = el.properties
+                const amenity_tags = ["bar", "pub", "nightclub"]
+                if ("amenity" in prop) {
+                    return amenity_tags.includes(prop.amenity)
+                }
+            })
+            
+            puby.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
+            return puby
+        },
+
+        tereny_zielone(state, getters) {
+            const tereny_zielone = state.poi.filter(function(el) {
+                const prop = el.properties
+                const leisure_tags = ["garden", "nature_reserve", "park"]
+                if ("leisure" in prop) {
+                    return leisure_tags.includes(prop.leisure)
+                }
+            })
+            
+            tereny_zielone.sort((a, b) => (getters.countDistance(a.geometry.coordinates) > getters.countDistance(b.geometry.coordinates)) ? 1 : -1)
+            return tereny_zielone
+        },
+        
+        
     },
     mutations: {
         setPoi(state, payload) {

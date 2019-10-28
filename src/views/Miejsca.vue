@@ -1,75 +1,78 @@
 <template>
     <div class="miejscaPage">
-        <div class="titleBar bg-blue">
+        <!-- ATRAKCJE -->
+         <div class="titleBar bg-blue">
             <span class="titleBar__title">Atrakcje:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
+            <router-link :to="'/viewall/atrakcje'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <div class="carousel__div">
+            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in atrakcje.slice(0,5)" :key="place.id">
                 <img class="carousel__div--img" src="../assets/fakephoto.png">
-                <div class="carousel__div--title">Nazwa obiektu</div>
-                <div class="carousel__div--distance">Odległość: 520m</div>
-            </div>
+                <div class="carousel__div--title">{{place.properties.name}}</div>
+                <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
+            </router-link>
         </div>
-
-
-
+        <!-- RAKREACJA -->
         <div class="titleBar bg-yellow">
             <span class="titleBar__title">Rekreacja:</span>
             <router-link :to="'/viewall/rekreacja'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <div class="carousel__div" v-for="place in rekreacja.slice(0,5)" :key="place.id">
+            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in rekreacja.slice(0,5)" :key="place.id">
                 <img class="carousel__div--img" src="../assets/fakephoto.png">
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
-            </div>
+            </router-link>
         </div>
-
-
+        <!-- GASTRONOMIA -->
         <div class="titleBar bg-green">
             <span class="titleBar__title">Gastronomia:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
+            <router-link :to="'/viewall/gastronomia'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <!-- TUTAJ BĘDZIE CARUZELA V-FOR -->
+            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in gastronomia.slice(0,5)" :key="place.id">
+                <img class="carousel__div--img" src="../assets/fakephoto.png">
+                <div class="carousel__div--title">{{place.properties.name}}</div>
+                <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
+            </router-link>
         </div>
-
-        
+        <!-- NOCLEGI -->
         <div class="titleBar bg-red">
             <span class="titleBar__title">Noclegi:</span>
             <router-link :to="'/viewall/noclegi'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <div class="carousel__div" v-for="place in noclegi.slice(0,5)" :key="place.id">
+            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in noclegi.slice(0,5)" :key="place.id">
                 <img class="carousel__div--img" src="../assets/fakephoto.png">
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
-            </div>
+            </router-link>
         </div>
-
-
+        <!-- PUBY -->
         <div class="titleBar bg-brown">
             <span class="titleBar__title">Puby:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
+            <router-link :to="'/viewall/puby'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <!-- TUTAJ BĘDZIE CARUZELA V-FOR -->
+            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in puby.slice(0,5)" :key="place.id">
+                <img class="carousel__div--img" src="../assets/fakephoto.png">
+                <div class="carousel__div--title">{{place.properties.name}}</div>
+                <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
+            </router-link>
         </div>
+        <!-- TERENY ZIELONE -->
         <div class="titleBar bg-dark-green">
             <span class="titleBar__title">Tereny zielone:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
+            <router-link :to="'/viewall/tereny_zielone'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <!-- TUTAJ BĘDZIE CARUZELA V-FOR -->
+            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in tereny_zielone.slice(0,5)" :key="place.id">
+                <img class="carousel__div--img" src="../assets/fakephoto.png">
+                <div class="carousel__div--title">{{place.properties.name}}</div>
+                <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
+            </router-link>
         </div>
-        <div class="titleBar bg-dark-blue">
-            <span class="titleBar__title">W okolicy:</span>
-            <span class="titleBar__more">Pokaż więcej</span>
-        </div>
-        <div class="carousel">
-            <!-- TUTAJ BĘDZIE CARUZELA V-FOR -->
-        </div>
+
     </div>
 </template>
 
@@ -78,35 +81,8 @@ import { mapGetters} from "vuex";
 export default {
     name: 'miejsca',
     computed: {
-        ...mapGetters(["countDistance", "addUnits", "rekreacja", "noclegi"])
+        ...mapGetters(["countDistance", "addUnits", "atrakcje", "rekreacja", "noclegi", "gastronomia", "puby", "tereny_zielone"])
     },
-    /*
-    computed: {
-        atrakcje() {
-            const poi = this.$store.state.poi
-            const atrakcje = poi.filter(function(el) {
-                const prop = el.properties
-                const amenity_tags = ["cinema", "marketplace", "place_of_worship", "theatre"]
-                const historic_tags = ["cannon", "fort", "memorial", "monument", "ruins", "tomb", "castle"]
-                const leisure_tags = ["firepit", "fitness_centre", "swimming_pool", "park"]
-                const shop_tags = ["art", "gift", "mall", "department_store"]
-                const tourism_tags = ["artwork", "attraction", "picnic_site", "viewpoint"]
-                if ("amenity" in prop) {
-                    return amenity_tags.includes(prop.amenity)
-                } else if ("historic" in prop) {
-                    return historic_tags.includes(prop.historic)
-                } else if ("leisure" in prop) {
-                    return leisure_tags.includes(prop.leisure)
-                } else if ("shop" in prop) {
-                    return shop_tags.includes(prop.shop)
-                } else if ("tourism" in prop) {
-                    return tourism_tags.includes(prop.tourism)
-                }
-            })
-            return atrakcje
-        }
-    }
-    */
 }
 </script>
 
