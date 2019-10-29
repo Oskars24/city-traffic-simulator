@@ -4,12 +4,21 @@
             <router-link :to="{ name: 'miejsca'}" tag="span" class="pageTitle__prev">⇠</router-link>
             <span class="pageTitle__title">{{pageTitle.replace("_", " ")}}</span>
         </div>
-        <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="place"  v-for="place in placesArray" :key="place.id"> <!--v-show="place.properties.name"-->
+        <!--
+        <div tag="div" class="place" v-for="place in placesArray" :key="place.id"> v-show="place.properties.name && place.properties.description"
+            <a class="place__img" :href="'https://www.openstreetmap.org/'+place.id" target="_blank"><img class="place__img" src="../assets/fakephoto.png"></a><br>
+            <div class="place__title">{{place.properties.name}}</div>
+            <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
+            <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
+        </div>
+        -->
+        <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id">
             <img class="place__img" src="../assets/fakephoto.png">
             <div class="place__title">{{place.properties.name}}</div>
             <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
             <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
         </router-link>
+       
     </div>
 </template>
 

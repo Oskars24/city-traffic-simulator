@@ -77,7 +77,7 @@ export default new Vuex.Store({
         rekreacja(state, getters) {
             const rekreacja = state.poi.filter(function(el) {
                 const prop = el.properties
-                const leisure_tags = ["beach_resort", "bowling_alley", "firepit", "pitch", "fitness_centre", "golf_course", "horse_riding", "ice_rink", "miniature_golf", "sauna", "sports_centre", "stadium", "swimming_area", "swimming_pool", "trampoline_park", "water_park"]
+                const leisure_tags = ["beach_resort", "bowling_alley", "pitch", "fitness_centre", "golf_course", "horse_riding", "ice_rink", "miniature_golf", "sauna", "sports_centre", "stadium", "swimming_area", "swimming_pool", "trampoline_park", "water_park"]
                 const sport_tags = ["shooting", "bowling", "icerink", "free_flying", "skiing", "kayak", "tennis"]
                 const attraction_tags = ["summer_toboggan"]
                 if ("leisure" in prop) {
