@@ -5,15 +5,15 @@
             <span class="pageTitle__title">{{pageTitle.replace("_", " ")}}</span>
         </div>
         <!--
-        <div tag="div" class="place" v-for="place in placesArray" :key="place.id"> v-show="place.properties.name && place.properties.description"
+        <div tag="div" class="place" v-for="place in placesArray" :key="place.id">
             <a class="place__img" :href="'https://www.openstreetmap.org/'+place.id" target="_blank"><img class="place__img" src="../assets/fakephoto.png"></a><br>
             <div class="place__title">{{place.properties.name}}</div>
             <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
-            <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
+            <div class="place__desc" v-if="place.properties.description">{{place.id.replace('/','_')}} {{place.properties.description}}</div>
         </div>
         -->
-        <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id">
-            <img class="place__img" src="../assets/fakephoto.png">
+        <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id" v-show="place.properties.name && place.properties.description">
+            <img class="place__img" :src="loadImage(place.id)">
             <div class="place__title">{{place.properties.name}}</div>
             <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
             <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
@@ -27,6 +27,15 @@ import { mapGetters } from "vuex";
 
 export default {
     name: 'viewall',
+    methods: {
+        loadImage(variable) {
+            try {
+                return require(`../assets/images/thumb/${variable.replace('/','_')}.jpg`)
+            } catch (e) {
+                return require(`../assets/fakephoto.png`);
+            }
+        }
+    },
     computed: {
         ...mapGetters(["addUnits", "countDistance"]),
         pageTitle() {
@@ -34,7 +43,7 @@ export default {
         },
         placesArray() {
             return eval(`this.$store.getters.${this.pageTitle}`)
-        }
+        },
     },
     created() {
         

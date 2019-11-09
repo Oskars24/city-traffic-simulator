@@ -36,7 +36,7 @@
             <vl-view ref="view" :rotation.sync="rotation" :center="getChoosenPosition" :extent.sync="extent" :zoom.sync='zoom' :min-zoom.sync='zoomMin' :max-zoom.sync='zoomMax'></vl-view>
             
             <!-- AKTUALNA LOKALIZACJA -->
-            <vl-geoloc @update:position='updateGeoPositionEvent($event)' :tracking-options="{enableHighAccuracy: true}">
+            <vl-geoloc @update:position='updateGeoPositionEvent($event)' :tracking="this.useGeoPosition" :tracking-options="{enableHighAccuracy: true}">
                 <vl-feature>
                     <vl-geom-point :coordinates="getChoosenPosition"></vl-geom-point>
                     <vl-style-box>
@@ -187,8 +187,12 @@ export default {
         filtered() {
                 const poi = this.poi
                 const range = 0.001
-                const lon = this.geoPosition[0]
-                const lat = this.geoPosition[1]
+                let lon = this.choosenPosition[0]
+                let lat = this.choosenPosition[1]
+                if (this.useGeoPosition) {
+                    lon = this.geoPosition[0]
+                    lat = this.geoPosition[1]
+                }
                 const lonUp = lon + range
                 const latUp = lat + range
                 const lonDown = lon - range
