@@ -37,7 +37,7 @@ export default {
         },
         setPois() {
             const request = async () => {
-                const response = await fetch("https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B%0A%28node%5B~%22%5E%28amenity%7Chistoric%7Cleisure%7Cshop%7Ctourism%7Cattraction%7Csport%29%24%22~%22.%22%5D%2849.74755%2C22.707710%2C49.82137%2C22.86117%29%3B%0A%20%20way%5B~%22%5E%28amenity%7Chistoric%7Cleisure%7Cshop%7Ctourism%7Cattraction%7Csport%29%24%22~%22.%22%5D%2849.74755%2C22.707710%2C49.82137%2C22.86117%29%3B%0A%29%3B%20%28._%3B%3E%3B%29%3B%0Aout%3B")
+                const response = await fetch("https://overpass-api.de/api/interpreter?data=%5Bout%3Ajson%5D%3B%0A%28node%5B~%22%5E%28amenity%7Chistoric%7Cleisure%7Cshop%7Ctourism%7Csport%29%24%22~%22.%22%5D%5B%22name%22%5D%5B%22description%22%5D%28around%3A10000%2C49.782222%2C22.774444%29%3B%0A%20%20way%5B~%22%5E%28amenity%7Chistoric%7Cleisure%7Cshop%7Ctourism%7Csport%29%24%22~%22.%22%5D%5B%22name%22%5D%5B%22description%22%5D%28around%3A10000%2C49.782222%2C22.774444%29%3B%0A%29%3B%20%28._%3B%3E%3B%29%3B%0Aout%3B")
                 const json = await response.json()
                 const poi=osmtogeojson(await json).features
                 localForage.setItem('poi_date', new Date())
@@ -67,20 +67,6 @@ export default {
     created() {
         this.currentPosition()
         this.setPois()
-        
-       /*
-       if (navigator.geolocation) {
-                let current= null
-                const store = this.$store
-                navigator.geolocation.watchPosition(function (position) {
-                    if (current != position.timestamp) {
-                        current = position.timestamp
-                        store.commit("updateUserPath", [position.coords.longitude, position.coords.latitude])
-                        console.log([position.coords.longitude, position.coords.latitude])
-                    }
-                })
-            }
-        */
     },
 }
 // NEED FOR 100vh ON MOBILE

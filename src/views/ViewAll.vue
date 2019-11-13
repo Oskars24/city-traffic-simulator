@@ -1,6 +1,6 @@
 <template>
     <div class="viewAllPage">
-        <div class="pageTitle bg-blue">
+        <div class="pageTitle" :class="navColor(pageTitle)">
             <router-link :to="{ name: 'miejsca'}" tag="span" class="pageTitle__prev">⇠</router-link>
             <span class="pageTitle__title">{{pageTitle.replace("_", " ")}}</span>
         </div>
@@ -12,8 +12,10 @@
             <div class="place__desc" v-if="place.properties.description">{{place.id.replace('/','_')}} {{place.properties.description}}</div>
         </div>
         -->
-        <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id" v-show="place.properties.name && place.properties.description">
-            <img class="place__img" :src="loadImage(place.id)">
+        <router-link :to="'/'+pageTitle+'/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id" v-show="place.properties.name && place.properties.description">
+            <div class="place__photo">
+                <img class="place__photo--img" :src="loadImage(place.id)">
+            </div>
             <div class="place__title">{{place.properties.name}}</div>
             <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
             <div class="place__desc" v-if="place.properties.description">{{place.properties.description}}</div>
@@ -27,17 +29,8 @@ import { mapGetters } from "vuex";
 
 export default {
     name: 'viewall',
-    methods: {
-        loadImage(variable) {
-            try {
-                return require(`../assets/images/thumb/${variable.replace('/','_')}.jpg`)
-            } catch (e) {
-                return require(`../assets/fakephoto.png`);
-            }
-        }
-    },
     computed: {
-        ...mapGetters(["addUnits", "countDistance"]),
+        ...mapGetters(["addUnits", "countDistance", "loadImage", "navColor"]),
         pageTitle() {
             return this.$route.params.name
         },
@@ -45,9 +38,6 @@ export default {
             return eval(`this.$store.getters.${this.pageTitle}`)
         },
     },
-    created() {
-        
-    }
 }
 </script>
 
@@ -88,13 +78,24 @@ export default {
     grid-template-columns: max-content auto;
     grid-template-rows: max-content max-content auto;
 
-    &__img {
+    &__photo {
         margin-right: 10px;
         grid-column: 1/2;
         grid-row: 1/4;
         height: 100px;
+        width: 127px;
         border-radius: 7px;
         border: $border-grey;
+        overflow: hidden;
+        display: flex;
+        justify-items: center;
+        align-items: center;
+
+        &--img {
+            min-width: 100%;
+            min-height: 100%;
+            max-width: 127%;
+        }
     }
 
     &__title {

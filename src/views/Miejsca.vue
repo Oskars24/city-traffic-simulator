@@ -3,11 +3,13 @@
         <!-- ATRAKCJE -->
          <div class="titleBar bg-blue">
             <span class="titleBar__title">Atrakcje:</span>
-            <router-link :to="'/viewall/atrakcje'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
+            <router-link :to="'/atrakcje/viewall'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in atrakcje.slice(0,5)" :key="place.id">
-                <img class="carousel__div--img" src="../assets/fakephoto.png">
+            <router-link :to="'/atrakcje/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in atrakcje.slice(0,7)" :key="place.id">
+                <div class="carousel__div--photo">
+                    <img class="carousel__div--photo-img" :src="loadImage(place.id)">
+                </div>
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </router-link>
@@ -15,11 +17,13 @@
         <!-- RAKREACJA -->
         <div class="titleBar bg-yellow">
             <span class="titleBar__title">Rekreacja:</span>
-            <router-link :to="'/viewall/rekreacja'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
+            <router-link :to="'/rekreacja/viewall'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in rekreacja.slice(0,5)" :key="place.id">
-                <img class="carousel__div--img" src="../assets/fakephoto.png">
+            <router-link :to="'/rekreacja/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in rekreacja.slice(0,7)" :key="place.id">
+                <div class="carousel__div--photo">
+                    <img class="carousel__div--photo-img" :src="loadImage(place.id)">
+                </div>
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </router-link>
@@ -27,11 +31,13 @@
         <!-- GASTRONOMIA -->
         <div class="titleBar bg-green">
             <span class="titleBar__title">Gastronomia:</span>
-            <router-link :to="'/viewall/gastronomia'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
+            <router-link :to="'/gastronomia/viewall'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in gastronomia.slice(0,5)" :key="place.id">
-                <img class="carousel__div--img" src="../assets/fakephoto.png">
+            <router-link :to="'/gastronomia/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in gastronomia.slice(0,7)" :key="place.id">
+                <div class="carousel__div--photo">
+                    <img class="carousel__div--photo-img" :src="loadImage(place.id)">
+                </div>
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </router-link>
@@ -39,11 +45,13 @@
         <!-- NOCLEGI -->
         <div class="titleBar bg-red">
             <span class="titleBar__title">Noclegi:</span>
-            <router-link :to="'/viewall/noclegi'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
+            <router-link :to="'/noclegi/viewall'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in noclegi.slice(0,5)" :key="place.id">
-                <img class="carousel__div--img" src="../assets/fakephoto.png">
+            <router-link :to="'/noclegi/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in noclegi.slice(0,7)" :key="place.id">
+                <div class="carousel__div--photo">
+                    <img class="carousel__div--photo-img" :src="loadImage(place.id)">
+                </div>
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </router-link>
@@ -51,11 +59,13 @@
         <!-- PUBY -->
         <div class="titleBar bg-brown">
             <span class="titleBar__title">Puby:</span>
-            <router-link :to="'/viewall/puby'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
+            <router-link :to="'/puby/viewall'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in puby.slice(0,5)" :key="place.id">
-                <img class="carousel__div--img" src="../assets/fakephoto.png">
+            <router-link :to="'/puby/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in puby.slice(0,7)" :key="place.id">
+                <div class="carousel__div--photo">
+                    <img class="carousel__div--photo-img" :src="loadImage(place.id)">
+                </div>
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </router-link>
@@ -63,11 +73,13 @@
         <!-- TERENY ZIELONE -->
         <div class="titleBar bg-dark-green">
             <span class="titleBar__title">Tereny zielone:</span>
-            <router-link :to="'/viewall/tereny_zielone'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
+            <router-link :to="'/tereny_zielone/viewall'" tag="span" class="titleBar__more">Pokaż więcej</router-link>
         </div>
         <div class="carousel">
-            <router-link :to="'/szczegoly/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in tereny_zielone.slice(0,5)" :key="place.id">
-                <img class="carousel__div--img" src="../assets/fakephoto.png">
+            <router-link :to="'/tereny_zielone/'+place.id.replace('/', '_')" tag="div" class="carousel__div" v-for="place in tereny_zielone.slice(0,7)" :key="place.id">
+                <div class="carousel__div--photo">
+                    <img class="carousel__div--photo-img" :src="loadImage(place.id)">
+                </div>
                 <div class="carousel__div--title">{{place.properties.name}}</div>
                 <div class="carousel__div--distance">Odległość: {{addUnits(countDistance(place.geometry.coordinates))}}</div>
             </router-link>
@@ -81,7 +93,7 @@ import { mapGetters} from "vuex";
 export default {
     name: 'miejsca',
     computed: {
-        ...mapGetters(["countDistance", "addUnits", "atrakcje", "rekreacja", "noclegi", "gastronomia", "puby", "tereny_zielone"])
+        ...mapGetters(["countDistance", "addUnits", "loadImage", "atrakcje", "rekreacja", "noclegi", "gastronomia", "puby", "tereny_zielone"])
     },
 }
 </script>
@@ -120,10 +132,21 @@ export default {
         padding: 10px;
         max-width: 140px;
 
-        &--img {
+        &--photo {
             height: 100px;
+            width: 127px;
             border-radius: 7px;
             border: $border-grey;
+            overflow: hidden;
+            display: flex;
+            justify-items: center;
+            align-items: center;
+
+            &-img {
+                min-width: 100%;
+                min-height: 100%;
+                max-width: 127%;
+            }
         }
 
         &--title {

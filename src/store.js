@@ -48,6 +48,42 @@ export default new Vuex.Store({
                 }
             }
         },
+        
+        loadImage(state) {
+            return variable => {
+                try {
+                    return require(`./assets/images/thumb/${variable.replace('/','_')}.jpg`)
+                } catch (e) {
+                    return require(`./assets/fakephoto.png`);
+                }
+            }
+        },
+        navColor(state) {
+            return pageTitle => {
+                switch (pageTitle) {
+                    case "atrakcje":
+                        return "bg-blue"
+                        break;
+                    case "rekreacja":
+                        return "bg-yellow"
+                        break;
+                    case "gastronomia":
+                        return "bg-green"
+                        break;
+                    case "noclegi":
+                        return "bg-red"
+                        break;
+                    case "puby":
+                        return "bg-brown"
+                        break;
+                    case "tereny_zielone":
+                        return "bg-dark-green"
+                        break;
+                    default:
+                        return "bg-blue"
+                }
+            }
+        },
 
         atrakcje(state, getters) {
             const atrakcje = state.poi.filter(function(el) {

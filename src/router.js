@@ -46,14 +46,15 @@ export default new Router({
       component: MojPlan
     },
     {
-      path: '/viewall/:name',
+      path: '/:name/viewall',
       name: 'viewall',
       component: ViewAll
     },
     {
-      path: '/szczegoly/:id',
+      path: '/:name/:id',
       name: 'szczegoly',
       component: Szczegoly
     },
+
   ]
 })
