@@ -34,7 +34,6 @@
 
         <vl-map class="globalMap" ref="map" :load-tiles-while-animating="true" :load-tiles-while-interacting="true">
             <vl-view ref="view" :rotation.sync="rotation" :center="getChoosenPosition" :extent.sync="extent" :zoom.sync='zoom' :min-zoom.sync='zoomMin' :max-zoom.sync='zoomMax'></vl-view>
-            
             <!-- AKTUALNA LOKALIZACJA -->
             <vl-geoloc @update:position='updateGeoPositionEvent($event)' :tracking="this.useGeoPosition" :tracking-options="{enableHighAccuracy: true}">
                 <vl-feature>

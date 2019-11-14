@@ -12,7 +12,7 @@
             <div class="place__desc" v-if="place.properties.description">{{place.id.replace('/','_')}} {{place.properties.description}}</div>
         </div>
         -->
-        <router-link :to="'/'+pageTitle+'/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id" v-show="place.properties.name && place.properties.description">
+        <router-link :to="'/'+pageTitle+'/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id">
             <div class="place__photo">
                 <img class="place__photo--img" :src="loadImage(place.id)">
             </div>

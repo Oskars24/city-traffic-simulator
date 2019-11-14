@@ -7,7 +7,8 @@
         <img class="pageImg" :src="loadImage(place.id)">
         <div class="place">
             <span class="place__title">{{ place.properties.name }}</span>
-            <span class="place__open" v-if="place.properties.opening_hours">Otwarte</span>
+            <span class="place__open" v-if="isOpen==='open'">Teraz: otwarte</span>
+            <span class="place__close" v-if="isOpen==='close'">Teraz: zamknięte</span>
             <div class="place__icons">
                 <a class="place__icons--div">
                     <svg class="place__icons--div-img"><use xlink:href="#address"/></svg>
@@ -65,8 +66,8 @@
 </template>
 
 <script>
-import { mapGetters, mapState } from "vuex";
-
+import { mapGetters, mapState, mapActions } from "vuex";
+import opening_hours from 'opening_hours';
 export default {
     name: 'szczegoly',
     computed: {
@@ -79,8 +80,37 @@ export default {
             return this.poi.filter(el => {
                 return el.id===this.placeId
             })[0]
+        },
+        isOpen() {
+            if (this.place.properties.opening_hours) {
+                const oh = new opening_hours(this.place.properties.opening_hours, {"address":{"country":"Poland","country_code":"pl"}}, {'locale':'pl'})
+                return oh.getStateString()
+            } else {
+                return false
+            }
         }
     },
+    methods: {
+        ...mapActions(["getPoi"]),
+    },
+    created() {
+        const oh = new opening_hours('Mo 09:00-00:00; Tue-Wed 9:00-00:30; Thu 09:00-03:00; Fr 09:00-02:00; Sa 09:00-03:00; Su 10:00-03:00', {"address":{"country":"Poland","country_code":"pl"}}, {'locale':'pl'})
+        const from = new Date()
+        const to   = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)
+        
+
+        const is_open = oh.getState()
+        const state_string = oh.getStateString()
+        const next_change = oh.getNextChange()
+        var intervals = oh.getOpenIntervals(from, to)
+        var iterator = oh.getIterator()
+
+        console.log(is_open)
+        console.log(state_string)
+        console.log(next_change)
+        console.log(intervals)
+        
+    }
 }
 </script>
 
@@ -131,6 +161,11 @@ export default {
     &__open {
         font: $h3;
         color: $green;
+    }
+
+    &__close {
+        font: $h3;
+        color: $red;
     }
 
     &__icons {

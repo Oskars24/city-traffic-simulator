@@ -112,6 +112,7 @@ export default {
     created: function() {
         this.setPois
     },
+
     computed: {
         checkUserPath() {
             if (this.$store.state.userPath.length === 0) {
