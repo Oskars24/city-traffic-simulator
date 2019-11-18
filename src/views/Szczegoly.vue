@@ -7,8 +7,8 @@
         <img class="pageImg" :src="loadImage(place.id)">
         <div class="place">
             <span class="place__title">{{ place.properties.name }}</span>
-            <span class="place__open" v-if="isOpen==='open'">Teraz: otwarte</span>
-            <span class="place__close" v-if="isOpen==='close'">Teraz: zamknięte</span>
+            <span class="place__open" v-if="isOpen==='open'">Teraz: <span class="place__open--color">otwarte do {{formatDate(openingHours[currentDay]).substr(-5)}}</span></span>
+            <span class="place__close" v-if="isOpen==='close'">Teraz: <span class="place__close--color">zamknięte</span>, otwarte od: {{whenOpen}}</span>
             <div class="place__icons">
                 <a class="place__icons--div">
                     <svg class="place__icons--div-img"><use xlink:href="#address"/></svg>
@@ -30,6 +30,17 @@
                 </a>
             </div>
             <div class="place__desc">{{ place.properties.description }}</div>
+            <br>
+            <table class="place__hours" v-if="isOpen">
+                <tr>
+                    <th colspan="2" class="place__title">Godziny otwarcia:</th>
+                </tr>
+                <template v-for="(i, index) in fullWeek">
+                    <tr :class="{'fbold': index===currentDay}" :key="i">
+                        <td>{{fullWeek[index]}}:</td><td>{{formatDate(openingHours[index])}}</td>
+                    </tr>
+                </template>
+            </table>
             <br>
             <br>
             <br>
@@ -70,6 +81,13 @@ import { mapGetters, mapState, mapActions } from "vuex";
 import opening_hours from 'opening_hours';
 export default {
     name: 'szczegoly',
+    data() {
+            return {
+                fullWeek: ["Poniedziałek", "Wtorek", "Środa", "Czwartek", "Piątek", "Sobota", "Niedziela"],
+                shortWeek: ["pon.", "wt.", "śr.", "czw.", "pt.", "so.", "niedz."],
+                currentDay: new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
+            }
+    },
     computed: {
         ...mapGetters(["addUnits", "countDistance", "loadImage", "navColor"]),
         ...mapState(["poi"]),
@@ -81,35 +99,60 @@ export default {
                 return el.id===this.placeId
             })[0]
         },
-        isOpen() {
+        oh() {
             if (this.place.properties.opening_hours) {
                 const oh = new opening_hours(this.place.properties.opening_hours, {"address":{"country":"Poland","country_code":"pl"}}, {'locale':'pl'})
-                return oh.getStateString()
+                return oh
             } else {
                 return false
             }
+        },
+        isOpen() {
+            if (this.oh) {
+                return this.oh.getStateString()
+            } else {
+                return false
+            }
+        },
+        whenOpen() {
+            const nextChange = this.oh.getNextChange()
+            const nextDay = nextChange.getDay() === 0 ? 6 : nextChange.getDay() - 1
+            return `${this.shortWeek[nextDay]} ${this.addZero(nextChange.getHours())}:${this.addZero(nextChange.getMinutes())}`
+        },
+        openingHours() {
+            const dayToMs = 24 * 60 * 60 * 1000
+            const correct = (new Date().getDay() -1)*(-1)
+            const openingTable = []
+
+            for (let i=0; i<7; i++) {
+                const from = new Date(Date.now() + (i + correct) * dayToMs)
+                from.setHours(0)
+                from.setHours(0)
+                from.setMinutes(0)
+                from.setSeconds(0)
+                from.setMilliseconds(0)
+                const to = new Date (from.getTime() + dayToMs)
+                const intervals = this.oh.getOpenIntervals(from, to)
+                openingTable.push(intervals)
+            }
+            return openingTable
         }
     },
     methods: {
         ...mapActions(["getPoi"]),
+        addZero(i) {
+            return (i < 10)? '0'+i : i;
+        },
+        formatDate(date) {
+            if (date.length > 0) {
+                return `${this.addZero(date[0][0].getHours())}:${this.addZero(date[0][0].getMinutes())}–${this.addZero(date[0][1].getHours())}:${this.addZero(date[0][1].getMinutes())}`
+            } else {
+                return "Zamknięte"
+            }
+        },
     },
     created() {
-        const oh = new opening_hours('Mo 09:00-00:00; Tue-Wed 9:00-00:30; Thu 09:00-03:00; Fr 09:00-02:00; Sa 09:00-03:00; Su 10:00-03:00', {"address":{"country":"Poland","country_code":"pl"}}, {'locale':'pl'})
-        const from = new Date()
-        const to   = new Date(Date.now() + 6 * 24 * 60 * 60 * 1000)
-        
-
-        const is_open = oh.getState()
-        const state_string = oh.getStateString()
-        const next_change = oh.getNextChange()
-        var intervals = oh.getOpenIntervals(from, to)
-        var iterator = oh.getIterator()
-
-        console.log(is_open)
-        console.log(state_string)
-        console.log(next_change)
-        console.log(intervals)
-        
+        console.log(this.whenOpen)
     }
 }
 </script>
@@ -160,12 +203,18 @@ export default {
 
     &__open {
         font: $h3;
-        color: $green;
+
+        &--color {
+            color: $green;
+        }
     }
 
     &__close {
         font: $h3;
-        color: $red;
+
+        &--color {
+            color: $red;
+        }
     }
 
     &__icons {
@@ -192,6 +241,12 @@ export default {
 
     &__desc {
         font: $h3;
+    }
+
+    &__hours {
+        font: $h4b;
+        text-align: left;
+        margin-right: auto;
     }
 }
 </style>

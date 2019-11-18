@@ -20,6 +20,7 @@ $h1: bold 22px Open Sans, sans-serif;
 $h2: bold 18px Open Sans, sans-serif;
 $h3: normal 18px Open Sans, sans-serif;
 $h4: 700 14px Open Sans, sans-serif;
+$h4b: normal 14px Open Sans, sans-serif;
 $h5: 400 12px Open Sans, sans-serif;
 $h6: 700 10px Open Sans, sans-serif;
 
@@ -54,6 +55,11 @@ $h6: 700 10px Open Sans, sans-serif;
 
 .bg-brown {
     background-color: $brown;
+}
+
+// OTHER CLASS
+.fbold {
+    font-weight: bold;
 }
 
 // CONSTANTS
