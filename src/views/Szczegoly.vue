@@ -8,7 +8,7 @@
         <div class="place">
             <span class="place__title">{{ place.properties.name }}</span>
             <span class="place__open" v-if="isOpen==='open'">Teraz: <span class="place__open--color">otwarte do {{formatDate(openingHours[currentDay]).substr(-5)}}</span></span>
-            <span class="place__close" v-if="isOpen==='close'">Teraz: <span class="place__close--color">zamknięte</span>, otwarte od: {{whenOpen}}</span>
+            <span class="place__close" v-if="isOpen==='close'">Teraz: <span class="place__close--color">zamknięte</span>, otwarcie {{whenOpen}}</span>
             <div class="place__icons">
                 <a class="place__icons--div">
                     <svg class="place__icons--div-img"><use xlink:href="#address"/></svg>
@@ -116,8 +116,14 @@ export default {
         },
         whenOpen() {
             const nextChange = this.oh.getNextChange()
+            const difference = Math.ceil((this.oh.getNextChange() - new Date())/(24 * 60 * 60 * 1000))
             const nextDay = nextChange.getDay() === 0 ? 6 : nextChange.getDay() - 1
-            return `${this.shortWeek[nextDay]} ${this.addZero(nextChange.getHours())}:${this.addZero(nextChange.getMinutes())}`
+            if (difference < 7) {
+                return `od: ${this.shortWeek[nextDay]} ${this.addZero(nextChange.getHours())}:${this.addZero(nextChange.getMinutes())}`
+            } else {
+                return `za ${difference} dni`
+            }
+            
         },
         openingHours() {
             const dayToMs = 24 * 60 * 60 * 1000
@@ -152,7 +158,7 @@ export default {
         },
     },
     created() {
-        console.log(this.whenOpen)
+        
     }
 }
 </script>

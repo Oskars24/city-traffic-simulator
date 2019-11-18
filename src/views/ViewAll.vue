@@ -4,14 +4,7 @@
             <router-link :to="{ name: 'miejsca'}" tag="span" class="pageTitle__prev">⇠</router-link>
             <span class="pageTitle__title">{{pageTitle.replace("_", " ")}}</span>
         </div>
-        <!--
-        <div tag="div" class="place" v-for="place in placesArray" :key="place.id">
-            <a class="place__img" :href="'https://www.openstreetmap.org/'+place.id" target="_blank"><img class="place__img" src="../assets/fakephoto.png"></a><br>
-            <div class="place__title">{{place.properties.name}}</div>
-            <div class="place__distance">(odl: {{addUnits(countDistance(place.geometry.coordinates))}})</div>
-            <div class="place__desc" v-if="place.properties.description">{{place.id.replace('/','_')}} {{place.properties.description}}</div>
-        </div>
-        -->
+
         <router-link :to="'/'+pageTitle+'/'+place.id.replace('/', '_')" tag="div" class="place" v-for="place in placesArray" :key="place.id">
             <div class="place__photo">
                 <img class="place__photo--img" :src="loadImage(place.id)">
