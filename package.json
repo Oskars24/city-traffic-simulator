@@ -15,7 +15,7 @@
     "google-polyline": "^1.0.3",
     "i18next-client": "^1.11.4",
     "localforage": "^1.7.3",
-    "moment": "^2.24.0",
+    "moment": "^2.29.4",
     "ol-ext": "^3.1.7",
     "opening_hours": "^3.5.0",
     "osmtogeojson": "^3.0.0-beta.3",
