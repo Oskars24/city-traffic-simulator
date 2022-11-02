@@ -18,7 +18,7 @@
     "moment": "^2.24.0",
     "ol-ext": "^3.1.7",
     "opening_hours": "^3.5.0",
-    "osmtogeojson": "^3.0.0-beta.3",
+    "osmtogeojson": "^3.0.0-beta.5",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vuelayers": "^0.11.9",
